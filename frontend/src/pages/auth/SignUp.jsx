@@ -25,36 +25,47 @@ const SignupPage = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    setSuccessMessage("");
+ const handleSubmit = async (e) => {
+   e.preventDefault();
+   setLoading(true);
+   setError("");
+   setSuccessMessage("");
 
-    try {
-      const response = await axios.post(
-        `${import.meta.BACKEND_URI}/api/user/signup`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+   try {
+     const response = await axios.post(
+       `https://task-manager-iota-navy.vercel.app/api/user/signup`,
+       formData,
+       {
+         headers: {
+           "Content-Type": "application/json",
+         },
+       }
+     );
 
-      if (response.status === 201) {
-        setSuccessMessage("User created successfully!");
-        alert("User created successfully");
-        navigate("/login"); // Redirect to login page after successful signup
-      }
-    } catch (err) {
-      setError(
-        err.response?.data?.message || "An error occurred during signup."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+     if (response.status === 201) {
+       setSuccessMessage("User created successfully!");
+       alert("User created successfully");
+       navigate("/login"); // Redirect to login page after successful signup
+     }
+   } catch (err) {
+     console.error("Signup Error:", err);
+     if (err.response) {
+       // The request was made and the server responded with a status code
+       // that falls out of the range of 2xx
+       setError(
+         err.response.data?.message || "An error occurred during signup."
+       );
+     } else if (err.request) {
+       // The request was made but no response was received
+       setError("No response received from the server. Please try again.");
+     } else {
+       // Something happened in setting up the request that triggered an Error
+       setError("An unexpected error occurred. Please try again.");
+     }
+   } finally {
+     setLoading(false);
+   }
+ };
 
   const showPassword = () => setPasswordType("text");
   const hidePassword = () => setPasswordType("password");
