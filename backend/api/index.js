@@ -8,6 +8,7 @@ const app = express();
 const connectDB = require("../src/db/connect.db");
 const userRouter = require("../src/routes/user.routes");
 const taskRouter = require("../src/routes/task.routes");
+const authUser = require("../src/middleware/auth.middleware");
 /*MIDDLEWARE*/
 app.use(helmet());
 app.use(express.json());
@@ -19,7 +20,7 @@ if (process.env.NODE_ENV === "DEVELOPMENT") {
 }
 /*ROUTE*/
 app.use("/api/user", userRouter);
-app.use("/api/task", taskRouter);
+app.use("/api/task", authUser, taskRouter);
 
 /* server with mongo db connection , if  our mongoose connection failed then it will give us error  */
 const PORT = process.env.PORT || 5000;
