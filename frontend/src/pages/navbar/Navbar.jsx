@@ -10,13 +10,13 @@ const Navbar = () => {
 
           <ul className="flex justify-between items-center w-1/4">
             <li className="hover:text-yellow-600">
-              <Link href="/">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li className="border px-4 bg-slate-950 text-white rounded-xl py-2">
-              <Link href="/login">Login</Link>
+              <Link to="/login">Login</Link>
             </li>
             <li className="border px-4 bg-slate-950 text-white rounded-xl py-2">
-              <Link href="/signup">Sign Up</Link>
+              <Link to="/signup">Sign Up</Link>
             </li>
           </ul>
         </nav>
