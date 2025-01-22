@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { BsEye } from "react-icons/bs";
 import { FaRegEyeSlash } from "react-icons/fa";
-import axios from "axios"; // Import axios if you choose to use it.
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const SignupPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +33,7 @@ const SignupPage = () => {
 
     try {
       const response = await axios.post(
-        "https://example.com/signup",
+        `http://localhost:5000/api/user/signup`,
         formData,
         {
           headers: {
@@ -41,14 +43,13 @@ const SignupPage = () => {
       );
 
       if (response.status === 201) {
-        setSuccessMessage("Signup successful!");
-        setFormData({ name: "", email: "", password: "" }); // Reset form
-      } else {
-        setError("Something went wrong. Please try again.");
+        setSuccessMessage("User created successfully!");
+        alert("User created successfully");
+        navigate("/login"); // Redirect to login page after successful signup
       }
-    } catch (error) {
+    } catch (err) {
       setError(
-        error.response?.data?.message || "Failed to signup. Please try again."
+        err.response?.data?.message || "An error occurred during signup."
       );
     } finally {
       setLoading(false);
@@ -107,9 +108,12 @@ const SignupPage = () => {
               />
               <div className="absolute top-3 right-3 bg-white">
                 {PasswordType === "password" ? (
-                  <BsEye onClick={showPassword} />
+                  <BsEye onClick={showPassword} className="cursor-pointer" />
                 ) : (
-                  <FaRegEyeSlash onClick={hidePassword} />
+                  <FaRegEyeSlash
+                    onClick={hidePassword}
+                    className="cursor-pointer"
+                  />
                 )}
               </div>
             </div>
