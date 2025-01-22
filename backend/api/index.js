@@ -19,8 +19,11 @@ app.use(bodyParser.json());
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
+    credentials: true,
+    methods: ["GET", "POST", "PATCH", "DELETE"],
   })
 );
+
 app.use(bodyParser.urlencoded({ extended: true }));
 if (process.env.NODE_ENV === "DEVELOPMENT") {
   app.use(morgan("dev"));
@@ -28,7 +31,9 @@ if (process.env.NODE_ENV === "DEVELOPMENT") {
 /*ROUTE*/
 app.use("/api/user", userRouter);
 app.use("/api/task", authUser, taskRouter);
-
+app.get("/api/testing", (req, res) => {
+  res.send("Hello World");
+});
 /* server with mongo db connection , if  our mongoose connection failed then it will give us error  */
 const PORT = process.env.PORT || 5000;
 (async () => {
