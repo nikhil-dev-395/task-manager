@@ -3,6 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const cors = require("cors");
+
 const app = express();
 /*FILES*/
 const connectDB = require("../src/db/connect.db");
@@ -14,6 +16,11 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 if (process.env.NODE_ENV === "DEVELOPMENT") {
   app.use(morgan("dev"));
